@@ -28,6 +28,7 @@ function Contact() {
   // State for form submission
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -66,7 +67,7 @@ function Contact() {
       valid = false;
     }
 
-    // Message validation - removed the 10 character restriction
+    // Message validation
     if (!formValues.message.trim()) {
       newErrors.message = "Message is required";
       valid = false;
@@ -77,26 +78,44 @@ function Contact() {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       setIsSubmitting(true);
+      setSubmitError(false);
 
-      // Since we're using formsubmit.co, we'll simulate the success
-      // In a real implementation, you might want to use fetch() to submit the form
-      setTimeout(() => {
+      try {
+        const form = e.target;
+        const formData = new FormData(form);
+
+        // Submit the form data
+        const response = await fetch(
+          `https://formsubmit.co/${formSubmitEmail}`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          // Success
+          setSubmitSuccess(true);
+          setFormValues({ name: "", email: "", message: "" });
+
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            setSubmitSuccess(false);
+          }, 5000);
+        } else {
+          // Error
+          setSubmitError(true);
+        }
+      } catch (error) {
+        setSubmitError(true);
+      } finally {
         setIsSubmitting(false);
-        setSubmitSuccess(true);
-
-        // Reset the form after submission
-        setFormValues({ name: "", email: "", message: "" });
-
-        // Hide success message after 5 seconds
-        setTimeout(() => {
-          setSubmitSuccess(false);
-        }, 5000);
-      }, 1000);
+      }
     }
   };
 
@@ -117,11 +136,29 @@ function Contact() {
           </div>
         )}
 
+        {submitError && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-4 rounded">
+            Something went wrong. Please try again or contact me directly at{" "}
+            {formSubmitEmail}.
+          </div>
+        )}
+
         <form
           action={`https://formsubmit.co/${formSubmitEmail}`}
           method="POST"
           onSubmit={handleSubmit}
         >
+          {/* FormSubmit.co configuration */}
+          <input
+            type="hidden"
+            name="_subject"
+            value="New Contact Form Submission"
+          />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_next" value={window.location.href} />
+          <input type="text" name="_honey" style={{ display: "none" }} />
+
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="flex flex-col flex-1">
               <input
