@@ -17,8 +17,12 @@ function Navbar() {
   return (
     <div className="flex px-4 py-2 m-2 border-[1.5px]">
       <div>
-        <h2 className="text-dark-grey md:hidden">[ii]</h2>
-        <h2 className="text-dark-grey hidden md:flex">[ascii taskii]</h2>
+        <Link to="/" className="text-dark-grey md:hidden">
+          [ii]
+        </Link>
+        <Link to="/" className="text-dark-grey hidden md:flex">
+          [ascii taskii]
+        </Link>
       </div>
       <div className="grow flex justify-between md:justify-end gap-3 md:gap-8">
         <div className="md:flex md:gap-4">
