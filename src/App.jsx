@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TodoList from "./components/ToDoList";
 import Weather from "./components/Weather";
 import About from "./components/About";
+import Contact from "./components/Contact";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<About />} />
           <Route path="/todo" element={<TodoList />} />
           <Route path="/weather" element={<Weather />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </BrowserRouter>
     </>

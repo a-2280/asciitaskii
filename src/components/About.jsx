@@ -1,7 +1,6 @@
 import React from "react";
 
 function About() {
-  // ASCII art for the About page
   const aboutLogo = `
  █████╗ ██████╗  ██████╗ ██╗   ██╗████████╗
 ██╔══██╗██╔══██╗██╔═══██╗██║   ██║╚══██╔══╝

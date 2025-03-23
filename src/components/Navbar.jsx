@@ -40,7 +40,7 @@ function Navbar() {
           <Link to="/" className="hidden md:flex">
             About
           </Link>
-          <a href="mailto:khaliff.williams@gmail.com">Contact</a>
+          <Link to="/contact">Contact</Link>
         </div>
       </div>
       {isOpen && (
